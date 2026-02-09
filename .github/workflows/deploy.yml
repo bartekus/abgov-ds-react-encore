@@ -1,0 +1,36 @@
+name: Build, Push and Deploy a Encore Docker Image to DigitalOcean
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-push-deploy-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Encore CLI script
+        uses: sozo-design/curl@v1.0.2
+        with:
+          args: --output install.sh -L https://encore.dev/install.sh
+
+      - name: Install Encore CLI
+        run: bash install.sh
+
+      - name: Log in to DigitalOcean container registry
+        run: docker login registry.digitalocean.com -u ${{ secrets.DIGITALOCEAN_USER_EMAIL }} -p ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Build Docker image
+        run: /home/runner/.encore/bin/encore build docker myapp
+
+      - name: Tag Docker image
+        run: docker tag myapp registry.digitalocean.com/registry.digitalocean.com/stagecraft-ing/abgov-ds-react-encore:latest
+
+      - name: Push Docker image
+        run: docker push registry.digitalocean.com/registry.digitalocean.com/stagecraft-ing/abgov-ds-react-encore:latest
