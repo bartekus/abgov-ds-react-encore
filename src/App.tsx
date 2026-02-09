@@ -15,12 +15,12 @@ function App() {
 
   useEffect(() => {
     // Load the counter value from the server on page load
-    client.api.get().then((data) => setCounter(data.value));
+    client.counter.get().then((data) => setCounter(data.value));
   }, []);
 
   const onIncrement = () => {
     // Increment the counter value on the server and update the UI
-    client.api.increment().then((data) => setCounter(data.value));
+    client.counter.increment().then((data) => setCounter(data.value));
   };
 
   return (
