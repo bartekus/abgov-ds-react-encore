@@ -33,7 +33,7 @@ jobs:
         run: /home/runner/.encore/bin/encore build docker --config ./infra.config.json abgov-ds-react-encore-ape2
 
       - name: Tag Docker image
-        run: docker tag abgov-ds-react-encore-ape2 registry.digitalocean.com/registry.digitalocean.com/stagecraft-ing/abgov-ds-react-encore:latest
+        run: docker tag abgov-ds-react-encore-ape2 registry.digitalocean.com/stagecraft-ing/abgov-ds-react-encore:latest
 
       - name: Push Docker image
-        run: docker push registry.digitalocean.com/registry.digitalocean.com/stagecraft-ing/abgov-ds-react-encore:latest
+        run: docker push registry.digitalocean.com/stagecraft-ing/abgov-ds-react-encore:latest
