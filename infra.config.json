@@ -1,0 +1,17 @@
+{
+  "$schema": "https://encore.dev/schemas/infra.schema.json",
+  "sql_servers": [
+    {
+      "host": "mydb.db.ondigitalocean.com:25060",
+      "tls_config": {
+        "ca": "-----BEGIN CERTIFICATE-----\n..."
+      },
+      "databases": {
+        "mydb": {
+          "name": "mydb",
+          "username": "doadmin",
+          "password": {"$env": "DB_PASSWORD"}
+        }
+      }
+    }]
+}
