@@ -30,7 +30,7 @@ jobs:
         run: docker login registry.digitalocean.com -u ${{ secrets.DIGITALOCEAN_USER_EMAIL }} -p ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
       - name: Build Docker image
-        run: /home/runner/.encore/bin/encore build docker abgov-ds-react-encore-ape2
+        run: /home/runner/.encore/bin/encore build docker --config ./infra.config.json abgov-ds-react-encore-ape2
 
       - name: Tag Docker image
         run: docker tag abgov-ds-react-encore-ape2 registry.digitalocean.com/registry.digitalocean.com/stagecraft-ing/abgov-ds-react-encore:latest
