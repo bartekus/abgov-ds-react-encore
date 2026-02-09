@@ -24,7 +24,7 @@ jobs:
         run: bash install.sh
 
       - name: Disable Encore Telemetry
-        run: encore telemetry disable
+        run: /home/runner/.encore/bin/encore telemetry disable
 
       - name: Log in to DigitalOcean container registry
         run: docker login registry.digitalocean.com -u ${{ secrets.DIGITALOCEAN_USER_EMAIL }} -p ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
