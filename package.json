@@ -11,15 +11,17 @@
     "gen": "encore gen client --output=./src/lib/client.ts --env=local"
   },
   "dependencies": {
-    "encore.dev": "^1.54.0",
+    "@abgov/react-components": "^6.10.0",
+    "@abgov/web-components": "^1.40.0",
     "drizzle-orm": "^0.36.0",
+    "encore.dev": "^1.54.0",
     "pg": "^8.13.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@types/node": "^20.5.7",
     "@eslint/js": "^9.13.0",
+    "@types/node": "^20.5.7",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",

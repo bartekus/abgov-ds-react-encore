@@ -1,10 +1,11 @@
 import { CSSProperties, useEffect, useState } from "react";
 import Client, { Environment, Local } from "./lib/client.ts";
+import {GoabAppFooter, GoabAppHeader, GoabGrid, GoabMicrositeHeader, GoabOneColumnLayout, GoabPageBlock, GoabSkeleton} from "@abgov/react-components";
 
-const BackgroundBlurStyling: CSSProperties = {
-  clipPath:
-    "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
-};
+// const BackgroundBlurStyling: CSSProperties = {
+//   clipPath:
+//     "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
+// };
 
 const env = import.meta.env.DEV ? Local : Environment("staging");
 const client = new Client(env);
@@ -24,7 +25,41 @@ function App() {
   };
 
   return (
-    <div className="bg-white h-screen overflow-hidden">
+      <GoabOneColumnLayout>
+        <section slot="header">
+          <GoabMicrositeHeader type="alpha" version="UAT"></GoabMicrositeHeader>
+          <GoabAppHeader url="/" heading="Design System">
+            <a href="/login">
+              Sign in
+            </a>
+          </GoabAppHeader>
+        </section>
+        <GoabPageBlock width="704px">
+          <p>
+            <GoabSkeleton type="header" size="4"></GoabSkeleton>
+            <GoabSkeleton type="text" size="1"></GoabSkeleton>
+          </p>
+          <p>
+            <GoabSkeleton type="header" size="4"></GoabSkeleton>
+            <GoabSkeleton type="text" size="1"></GoabSkeleton>
+          </p>
+          <GoabGrid minChildWidth="30ch">
+            <GoabSkeleton type="card" size="2"></GoabSkeleton>
+            <GoabSkeleton type="card" size="2"></GoabSkeleton>
+          </GoabGrid>
+        </GoabPageBlock>
+        <section slot="footer">
+          <GoabAppFooter></GoabAppFooter>
+        </section>
+      </GoabOneColumnLayout>
+
+  );
+}
+
+export default App;
+
+/*
+<div className="bg-white h-screen overflow-hidden">
       <div className="relative isolate px-6 pt-14 lg:px-8">
         <div
           aria-hidden="true"
@@ -80,7 +115,4 @@ function App() {
         </div>
       </div>
     </div>
-  );
-}
-
-export default App;
+ */
