@@ -23,14 +23,17 @@ jobs:
       - name: Install Encore CLI
         run: bash install.sh
 
+      - name: Disable Encore Telemetry
+        run: encore telemetry disable
+
       - name: Log in to DigitalOcean container registry
         run: docker login registry.digitalocean.com -u ${{ secrets.DIGITALOCEAN_USER_EMAIL }} -p ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
       - name: Build Docker image
-        run: /home/runner/.encore/bin/encore build docker myapp
+        run: /home/runner/.encore/bin/encore build docker abgov-ds-react-encore-ape2
 
       - name: Tag Docker image
-        run: docker tag myapp registry.digitalocean.com/registry.digitalocean.com/stagecraft-ing/abgov-ds-react-encore:latest
+        run: docker tag abgov-ds-react-encore-ape2 registry.digitalocean.com/registry.digitalocean.com/stagecraft-ing/abgov-ds-react-encore:latest
 
       - name: Push Docker image
         run: docker push registry.digitalocean.com/registry.digitalocean.com/stagecraft-ing/abgov-ds-react-encore:latest
