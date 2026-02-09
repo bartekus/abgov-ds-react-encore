@@ -8,7 +8,6 @@
       },
       "databases": {
         "abgov": {
-          "name": "abgov",
           "username": "abgovadmin",
           "password": {"$env": "DB_PASSWORD"}
         }
