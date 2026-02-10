@@ -28,3 +28,13 @@ encore.gen.go
 encore.gen.cue
 /.encore
 /encore.gen
+
+# Environment files
+.env
+.env*
+.env.local
+.env.prod
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example

@@ -1,14 +1,13 @@
 import { CSSProperties, useEffect, useState } from "react";
-import Client, { Environment, Local } from "./lib/client.ts";
 import {GoabAppFooter, GoabAppHeader, GoabGrid, GoabMicrositeHeader, GoabOneColumnLayout, GoabPageBlock, GoabSkeleton} from "@abgov/react-components";
+import { api } from './lib/get-request-client'
 
 const BackgroundBlurStyling: CSSProperties = {
   clipPath:
     "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
 };
 
-const env = import.meta.env.DEV ? Local : Environment("staging");
-const client = new Client(env);
+console.log('import.meta.env', import.meta.env);
 
 function App() {
   const [counter, setCounter] = useState<number>();
@@ -16,12 +15,12 @@ function App() {
 
   useEffect(() => {
     // Load the counter value from the server on page load
-    client.counter.get().then((data) => setCounter(data.value));
+    api.counter.get().then((data) => setCounter(data.value));
   }, []);
 
   const onIncrement = () => {
     // Increment the counter value on the server and update the UI
-    client.counter.increment().then((data) => setCounter(data.value));
+    api.counter.increment().then((data) => setCounter(data.value));
   };
 
   return (
