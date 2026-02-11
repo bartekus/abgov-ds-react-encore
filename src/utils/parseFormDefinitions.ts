@@ -1,6 +1,12 @@
 import type { ConsolidatedFormDefinitions, FormField, FormSection, ScholarshipFormDefinition, RequiredDocument } from '../types/formDefinitions';
 import rawData from '../data/consolidate-form-definitions.json';
 
+// Wrapped format: { title: string, content: string } where content may be markdown with ```json ... ```
+interface WrappedFormData {
+    title?: string;
+    content?: string;
+}
+
 // Define the shape of the raw JSON data
 interface RawField {
     fieldName: string;
@@ -20,7 +26,7 @@ interface RawField {
 interface RawDocument {
     documentName: string;
     description: string;
-    required: boolean;
+    required?: boolean;
 }
 
 interface RawScholarship {
@@ -117,7 +123,7 @@ function convertScholarship(scholarship: RawScholarship): ScholarshipFormDefinit
         documentId: `${scholarship.scholarshipId}_doc_${index}`,
         documentName: doc.documentName,
         description: doc.description,
-        required: doc.required,
+        required: doc.required ?? false,
     }));
 
     return {
@@ -130,36 +136,48 @@ function convertScholarship(scholarship: RawScholarship): ScholarshipFormDefinit
     };
 }
 
-export function parseFormDefinitions(): ConsolidatedFormDefinitions {
-    // Cast the imported JSON to our RawFormData interface
-    // Since we unwrapped the file, it matches RawFormData directly
-    const data = rawData as unknown as RawFormData;
+function extractFormData(raw: unknown): RawFormData {
+    const wrapped = raw as WrappedFormData;
+    if (wrapped?.content && typeof wrapped.content === 'string') {
+        let jsonStr = wrapped.content.trim();
+        const jsonMatch = jsonStr.match(/^```(?:json)?\s*\n?([\s\S]*?)\n?```/);
+        if (jsonMatch) {
+            jsonStr = jsonMatch[1].trim();
+        }
+        return JSON.parse(jsonStr) as RawFormData;
+    }
+    return raw as RawFormData;
+}
 
-    // Convert common fields
+export function parseFormDefinitions(): ConsolidatedFormDefinitions {
+    const data = extractFormData(rawData);
+
     const commonSections: FormSection[] = [];
     const commonFieldsData = data.commonFields;
 
-    if (commonFieldsData.personalInformation) {
+    if (commonFieldsData?.personalInformation) {
         commonSections.push(convertSection('personalInformation', commonFieldsData.personalInformation));
     }
-    if (commonFieldsData.contactInformation) {
+    if (commonFieldsData?.contactInformation) {
         commonSections.push(convertSection('contactInformation', commonFieldsData.contactInformation));
     }
-    if (commonFieldsData.citizenshipAndResidency) {
+    if (commonFieldsData?.citizenshipAndResidency) {
         commonSections.push(convertSection('citizenshipAndResidency', commonFieldsData.citizenshipAndResidency));
     }
-    if (commonFieldsData.postSecondaryEnrolment) {
+    if (commonFieldsData?.postSecondaryEnrolment) {
         commonSections.push(convertSection('postSecondaryEnrolment', commonFieldsData.postSecondaryEnrolment));
     }
-    if (commonFieldsData.declaration) {
+    if (commonFieldsData?.declaration) {
         commonSections.push(convertSection('declaration', commonFieldsData.declaration));
     }
+
+    const scholarships = Array.isArray(data.scholarships) ? data.scholarships : [];
 
     return {
         title: 'Alberta Scholarship Application',
         commonFields: {
             sections: commonSections,
         },
-        scholarships: data.scholarships.map(convertScholarship),
+        scholarships: scholarships.map(convertScholarship),
     };
 }
