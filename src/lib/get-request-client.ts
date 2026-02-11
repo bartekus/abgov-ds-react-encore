@@ -1,10 +1,9 @@
-import Client, { BaseURL, Local } from "./client";
+import Client, { BaseURL } from "./client";
 
-const baseURL: BaseURL =
-  (import.meta.env.VITE_API_BASE_URL as string | undefined) || Local;
+const baseURL: BaseURL = import.meta.env.VITE_API_BASE_URL;
 
-export function Environment(url: string): BaseURL {
-  return url;
+export function Environment(baseURL: string): BaseURL {
+    return `${baseURL}`;
 }
 
-export const api = new Client(baseURL);
+export const api = new Client(Environment(baseURL));
