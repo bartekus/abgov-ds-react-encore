@@ -1,7 +1,7 @@
-  import { CreateUserDto, UpdateUserDto, Response, UserResponse, UserDto } from "./user.interface";
+import { CreateUserDto, UpdateUserDto, Response, UserResponse/*, UserDto*/ } from "./user.interface";
 import { users } from "./schema";
 import { db } from "./database";
-import { count, sql, eq, asc } from 'drizzle-orm';
+import { /*count, sql,*/ eq, asc } from 'drizzle-orm';
 import { getOffset, paginatedData } from "./utils";
 
 const UserService = {

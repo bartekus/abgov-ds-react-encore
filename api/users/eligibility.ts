@@ -1,5 +1,6 @@
 import { api, APIError } from "encore.dev/api";
 import { db } from "./database";
+import {eligibilitySubmissions} from "./schema.ts";
 
 export interface SubmitEligibilityRequest {
   eligibleScholarshipIds: string[];
@@ -29,7 +30,7 @@ export const submit = api(
         );
       }
       const answers = body.answers ?? {};
-      const row = await db.queryRow<{ id: number }>`
+      const row = await db.eligibilitySubmissions<{ id: number }>`
         INSERT INTO eligibility_submissions (eligible_scholarship_ids, answers)
         VALUES (${JSON.stringify(body.eligibleScholarshipIds)}::jsonb, ${JSON.stringify(answers)}::jsonb)
         RETURNING id

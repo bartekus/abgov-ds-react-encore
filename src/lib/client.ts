@@ -33,7 +33,6 @@ const BROWSER = typeof globalThis === "object" && ("window" in globalThis);
  */
 export default class Client {
     public readonly counter: counter.ServiceClient
-    public readonly eligibility: eligibility.ServiceClient
     public readonly users: users.ServiceClient
     private readonly options: ClientOptions
     private readonly target: string
@@ -50,7 +49,6 @@ export default class Client {
         this.options = options ?? {}
         const base = new BaseClient(this.target, this.options)
         this.counter = new counter.ServiceClient(base)
-        this.eligibility = new eligibility.ServiceClient(base)
         this.users = new users.ServiceClient(base)
     }
 
@@ -110,36 +108,6 @@ export namespace counter {
     }
 }
 
-export namespace eligibility {
-    export interface SubmitEligibilityRequest {
-        eligibleScholarshipIds: string[]
-        answers?: { [key: string]: string | string[] }
-    }
-
-    export interface SubmitEligibilityResponse {
-        success: boolean
-        submissionId: number
-    }
-
-    export class ServiceClient {
-        private baseClient: BaseClient
-
-        constructor(baseClient: BaseClient) {
-            this.baseClient = baseClient
-            this.submit = this.submit.bind(this)
-        }
-
-        /**
-         * Submit eligibility questionnaire results (eligible scholarship IDs and optional answers).
-         */
-        public async submit(params: SubmitEligibilityRequest): Promise<SubmitEligibilityResponse> {
-            // Now make the actual call to the API
-            const resp = await this.baseClient.callTypedAPI("POST", `/eligibility/submit`, JSON.stringify(params))
-            return await resp.json() as SubmitEligibilityResponse
-        }
-    }
-}
-
 export namespace users {
     export interface CreateUserDto {
         /**
@@ -190,6 +158,16 @@ export namespace users {
          * The result of the request
          */
         result?: string | number
+    }
+
+    export interface SubmitEligibilityRequest {
+        eligibleScholarshipIds: string[]
+        answers?: { [key: string]: string | string[] }
+    }
+
+    export interface SubmitEligibilityResponse {
+        success: boolean
+        submissionId: number
     }
 
     export interface UpdateUserDto {
@@ -253,6 +231,7 @@ export namespace users {
             this.destroy = this.destroy.bind(this)
             this.read = this.read.bind(this)
             this.readOne = this.readOne.bind(this)
+            this.submit = this.submit.bind(this)
             this.update = this.update.bind(this)
         }
 
@@ -308,6 +287,15 @@ export namespace users {
             // Now make the actual call to the API
             const resp = await this.baseClient.callTypedAPI("GET", `/users/${encodeURIComponent(id)}`)
             return await resp.json() as UserResponse
+        }
+
+        /**
+         * Submit eligibility questionnaire results (eligible scholarship IDs and optional answers).
+         */
+        public async submit(params: SubmitEligibilityRequest): Promise<SubmitEligibilityResponse> {
+            // Now make the actual call to the API
+            const resp = await this.baseClient.callTypedAPI("POST", `/eligibility/submit`, JSON.stringify(params))
+            return await resp.json() as SubmitEligibilityResponse
         }
 
         /**
