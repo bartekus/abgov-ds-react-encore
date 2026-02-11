@@ -1,0 +1,1238 @@
+{
+  "questionnaireMetadata": {
+    "version": "1.0",
+    "lastUpdated": "2026-01-20",
+    "totalScholarships": 14,
+    "description": "Progressive eligibility questionnaire for Alberta scholarship programs"
+  },
+  "questionTiers": [
+    {
+      "tierId": "tier1",
+      "tierName": "Universal Eligibility",
+      "tierDescription": "Applies to ALL scholarships - 100% coverage",
+      "tierOrder": 1,
+      "estimatedEliminationRate": "100% if criteria not met",
+      "questions": [
+        {
+          "questionId": "Q1",
+          "questionText": "Are you a Canadian Citizen, Permanent Resident of Canada, or Protected Person under Canada's Immigration and Refugee Protection Act?",
+          "questionType": "single_choice",
+          "required": true,
+          "options": [
+            {
+              "optionId": "Q1_A",
+              "optionText": "Yes - Canadian Citizen",
+              "value": "canadian_citizen"
+            },
+            {
+              "optionId": "Q1_B",
+              "optionText": "Yes - Permanent Resident",
+              "value": "permanent_resident"
+            },
+            {
+              "optionId": "Q1_C",
+              "optionText": "Yes - Protected Person",
+              "value": "protected_person"
+            },
+            {
+              "optionId": "Q1_D",
+              "optionText": "No - Visa Student",
+              "value": "visa_student"
+            }
+          ],
+          "eliminationRules": [
+            {
+              "ruleId": "R1",
+              "condition": "value == 'visa_student'",
+              "action": "eliminate_all",
+              "eliminatedScholarships": ["all"],
+              "eliminationMessage": "Visa students are not eligible for any Alberta Heritage Scholarships"
+            }
+          ],
+          "helpText": "All scholarships require Canadian citizenship, permanent residency, or protected person status"
+        },
+        {
+          "questionId": "Q2",
+          "questionText": "Are you an Alberta resident?",
+          "questionType": "single_choice",
+          "required": true,
+          "options": [
+            {
+              "optionId": "Q2_A",
+              "optionText": "Yes",
+              "value": "yes"
+            },
+            {
+              "optionId": "Q2_B",
+              "optionText": "No",
+              "value": "no"
+            }
+          ],
+          "conditionalQuestions": [
+            {
+              "triggeredBy": "Q2_A",
+              "subQuestionId": "Q2_SUB",
+              "subQuestionText": "Which condition establishes your Alberta residency?",
+              "questionType": "single_choice",
+              "options": [
+                {
+                  "optionId": "Q2_SUB_A",
+                  "optionText": "My parent/legal guardian has lived in Alberta for 12+ consecutive months",
+                  "value": "parent_resident"
+                },
+                {
+                  "optionId": "Q2_SUB_B",
+                  "optionText": "I lived in Alberta for 12+ consecutive months before starting post-secondary",
+                  "value": "self_resident"
+                },
+                {
+                  "optionId": "Q2_SUB_C",
+                  "optionText": "My spouse/partner is an Alberta resident",
+                  "value": "spouse_resident"
+                }
+              ]
+            }
+          ],
+          "eliminationRules": [
+            {
+              "ruleId": "R2",
+              "condition": "value == 'no'",
+              "action": "eliminate_all",
+              "eliminatedScholarships": ["all"],
+              "eliminationMessage": "Alberta residency is required for all scholarships"
+            }
+          ],
+          "helpText": "All scholarships require Alberta residency under one of the specified conditions"
+        }
+      ]
+    },
+    {
+      "tierId": "tier2",
+      "tierName": "Broad Academic Status",
+      "tierDescription": "Reduces pool by 60-80%",
+      "tierOrder": 2,
+      "estimatedEliminationRate": "60-80%",
+      "questions": [
+        {
+          "questionId": "Q3",
+          "questionText": "What is your current educational status?",
+          "questionType": "single_choice",
+          "required": true,
+          "options": [
+            {
+              "optionId": "Q3_A",
+              "optionText": "High school student or recent graduate (graduated this academic year)",
+              "value": "high_school_graduate"
+            },
+            {
+              "optionId": "Q3_B",
+              "optionText": "First year undergraduate student",
+              "value": "first_year_undergrad"
+            },
+            {
+              "optionId": "Q3_C",
+              "optionText": "Second or subsequent year undergraduate student",
+              "value": "second_plus_undergrad"
+            },
+            {
+              "optionId": "Q3_D",
+              "optionText": "Master's student",
+              "value": "masters_student"
+            },
+            {
+              "optionId": "Q3_E",
+              "optionText": "Doctoral student",
+              "value": "doctoral_student"
+            },
+            {
+              "optionId": "Q3_F",
+              "optionText": "Completing high school equivalency program",
+              "value": "high_school_equiv"
+            },
+            {
+              "optionId": "Q3_G",
+              "optionText": "Not currently enrolled",
+              "value": "not_enrolled"
+            }
+          ],
+          "eliminationRules": [
+            {
+              "ruleId": "R3_A",
+              "condition": "value == 'high_school_equiv'",
+              "action": "keep_only",
+              "keptScholarships": ["1c01ecaa-ea06-4b48-80a8-af3ab2aef07f"],
+              "eliminationMessage": "Only Adult High School Equivalency Scholarship available for high school equivalency students"
+            },
+            {
+              "ruleId": "R3_B",
+              "condition": "value == 'masters_student' OR value == 'doctoral_student'",
+              "action": "keep_only",
+              "keptScholarships": [
+                "4625ad2f-c6ee-4ee5-ac9a-60b6f9130e09",
+                "cc5d3c40-3e49-49a5-8166-ad13fa23689d"
+              ],
+              "eliminationMessage": "Only Sir James Lougheed Award and Arts Graduate Scholarship available for graduate students"
+            },
+            {
+              "ruleId": "R3_C",
+              "condition": "value == 'first_year_undergrad'",
+              "action": "eliminate",
+              "eliminatedScholarships": [
+                "e4b8cec2-1221-496f-85ef-c1e1edde8a09",
+                "ceb70da4-29f0-403c-b2d2-ab10677860de",
+                "2d4be9ee-ba07-4762-a463-2b2f867deb34",
+                "21a3ef1f-75a3-4968-b571-cc5a98f9dd8e"
+              ],
+              "eliminationMessage": "Several scholarships require second or subsequent year of study"
+            },
+            {
+              "ruleId": "R3_D",
+              "condition": "value == 'high_school_graduate'",
+              "action": "keep_only",
+              "keptScholarships": [
+                "761ce3c7-afa6-4a2c-9684-95b40ec52b6e",
+                "e6b5d8e3-6c8d-4395-b035-14afe1e64363",
+                "8c85de79-8174-480e-b168-27967213c9b5"
+              ],
+              "eliminationMessage": "Only certain scholarships available for recent high school graduates"
+            },
+            {
+              "ruleId": "R3_E",
+              "condition": "value == 'not_enrolled'",
+              "action": "eliminate_all",
+              "eliminatedScholarships": ["all"],
+              "eliminationMessage": "Full-time enrollment is required for all scholarships"
+            }
+          ],
+          "helpText": "Your current educational level determines which scholarships are available to you"
+        },
+        {
+          "questionId": "Q4",
+          "questionText": "Are you currently enrolled full-time in a post-secondary institution?",
+          "questionType": "single_choice",
+          "required": true,
+          "conditionalDisplay": {
+            "showIf": "Q3.value != 'high_school_graduate' AND Q3.value != 'not_enrolled'"
+          },
+          "options": [
+            {
+              "optionId": "Q4_A",
+              "optionText": "Yes",
+              "value": "yes"
+            },
+            {
+              "optionId": "Q4_B",
+              "optionText": "No - Part-time",
+              "value": "no_parttime"
+            },
+            {
+              "optionId": "Q4_C",
+              "optionText": "No - Not enrolled",
+              "value": "no_not_enrolled"
+            }
+          ],
+          "eliminationRules": [
+            {
+              "ruleId": "R4",
+              "condition": "value == 'no_parttime' OR value == 'no_not_enrolled'",
+              "action": "eliminate_all",
+              "eliminatedScholarships": ["all"],
+              "eliminationMessage": "Full-time enrollment is required for all scholarships"
+            }
+          ],
+          "helpText": "Full-time enrollment is a universal requirement"
+        },
+        {
+          "questionId": "Q5",
+          "questionText": "Where is your post-secondary institution located?",
+          "questionType": "single_choice",
+          "required": true,
+          "conditionalDisplay": {
+            "showIf": "Q4.value == 'yes'"
+          },
+          "options": [
+            {
+              "optionId": "Q5_A",
+              "optionText": "Alberta (publicly funded institution)",
+              "value": "alberta"
+            },
+            {
+              "optionId": "Q5_B",
+              "optionText": "Elsewhere in Canada",
+              "value": "canada_other"
+            },
+            {
+              "optionId": "Q5_C",
+              "optionText": "Harvard College",
+              "value": "harvard"
+            },
+            {
+              "optionId": "Q5_D",
+              "optionText": "Other international institution",
+              "value": "international_other"
+            }
+          ],
+          "eliminationRules": [
+            {
+              "ruleId": "R5_A",
+              "condition": "value == 'harvard'",
+              "action": "keep_only",
+              "keptScholarships": ["761ce3c7-afa6-4a2c-9684-95b40ec52b6e"],
+              "eliminationMessage": "Only Charles S. Noble Scholarship available for Harvard students"
+            },
+            {
+              "ruleId": "R5_B",
+              "condition": "value == 'canada_other'",
+              "action": "keep_only",
+              "keptScholarships": [
+                "c52f7ca2-88e0-4ff8-8840-c166e2fd052b",
+                "3af9061d-53df-4f0b-9a2e-cf2c07890067"
+              ],
+              "eliminationMessage": "Only Tiessen Foundation Broadcast and Louise McKinney Study Outside Alberta available"
+            },
+            {
+              "ruleId": "R5_C",
+              "condition": "value == 'international_other'",
+              "action": "keep_only",
+              "keptScholarships": [
+                "4625ad2f-c6ee-4ee5-ac9a-60b6f9130e09",
+                "3af9061d-53df-4f0b-9a2e-cf2c07890067"
+              ],
+              "eliminationMessage": "Only Sir James Lougheed Award and Louise McKinney Study Outside Alberta available for international institutions"
+            },
+            {
+              "ruleId": "R5_D",
+              "condition": "value == 'alberta'",
+              "action": "eliminate",
+              "eliminatedScholarships": [
+                "761ce3c7-afa6-4a2c-9684-95b40ec52b6e",
+                "3af9061d-53df-4f0b-9a2e-cf2c07890067"
+              ],
+              "eliminationMessage": "Some scholarships are specifically for study outside Alberta"
+            }
+          ],
+          "helpText": "Institution location significantly affects scholarship eligibility"
+        }
+      ]
+    },
+    {
+      "tierId": "tier3",
+      "tierName": "Program-Specific Questions",
+      "tierDescription": "Reduces pool by 40-60%",
+      "tierOrder": 3,
+      "estimatedEliminationRate": "40-60%",
+      "questions": [
+        {
+          "questionId": "Q6",
+          "questionText": "What is your field of study or program type?",
+          "questionType": "single_choice",
+          "required": true,
+          "options": [
+            {
+              "optionId": "Q6_A",
+              "optionText": "Agriculture or related programs",
+              "value": "agriculture"
+            },
+            {
+              "optionId": "Q6_B",
+              "optionText": "Broadcasting (TV, radio, broadcast engineering)",
+              "value": "broadcasting"
+            },
+            {
+              "optionId": "Q6_C",
+              "optionText": "Education (Faculty of Education)",
+              "value": "education"
+            },
+            {
+              "optionId": "Q6_D",
+              "optionText": "Energy sector related (business, communications, sciences, engineering, IT)",
+              "value": "energy_sector"
+            },
+            {
+              "optionId": "Q6_E",
+              "optionText": "Sciences - Biology 30, Chemistry 30, Physics 30, Science 30",
+              "value": "sciences_high_school"
+            },
+            {
+              "optionId": "Q6_F",
+              "optionText": "Chemical Engineering, Nursing, or Social Work (Bachelor of Science)",
+              "value": "sciences_specific"
+            },
+            {
+              "optionId": "Q6_G",
+              "optionText": "Arts - music, drama, dance, literary or visual arts (graduate level)",
+              "value": "arts_graduate"
+            },
+            {
+              "optionId": "Q6_H",
+              "optionText": "Other",
+              "value": "other"
+            }
+          ],
+          "eliminationRules": [
+            {
+              "ruleId": "R6_A",
+              "condition": "value == 'agriculture'",
+              "action": "keep_only",
+              "keptScholarships": [
+                "e4b8cec2-1221-496f-85ef-c1e1edde8a09",
+                "ceb70da4-29f0-403c-b2d2-ab10677860de",
+                "2d4be9ee-ba07-4762-a463-2b2f867deb34"
+              ],
+              "eliminationMessage": "Agriculture students eligible for: Alberta Federation of Agriculture, Alberta Excellence in Agriculture, Eugene Boyko Memorial"
+            },
+            {
+              "ruleId": "R6_B",
+              "condition": "value == 'broadcasting'",
+              "action": "keep_only",
+              "keptScholarships": ["c52f7ca2-88e0-4ff8-8840-c166e2fd052b"],
+              "eliminationMessage": "Broadcasting students eligible for: Tiessen Foundation Broadcast Scholarship"
+            },
+            {
+              "ruleId": "R6_C",
+              "condition": "value == 'education'",
+              "action": "keep_only",
+              "keptScholarships": ["e6b5d8e3-6c8d-4395-b035-14afe1e64363"],
+              "eliminationMessage": "Education students eligible for: Anna and John Kolesar Memorial Scholarship"
+            },
+            {
+              "ruleId": "R6_D",
+              "condition": "value == 'energy_sector'",
+              "action": "keep_only",
+              "keptScholarships": ["040fb905-de32-48bc-8511-4b53440f313c"],
+              "eliminationMessage": "Energy sector students eligible for: Keyera Energy Peter J. Renton Memorial Scholarship"
+            },
+            {
+              "ruleId": "R6_E",
+              "condition": "value == 'sciences_high_school'",
+              "action": "keep_only",
+              "keptScholarships": ["8c85de79-8174-480e-b168-27967213c9b5"],
+              "eliminationMessage": "Science focus students eligible for: Janet and Horace Allen Science Scholarship"
+            },
+            {
+              "ruleId": "R6_F",
+              "condition": "value == 'sciences_specific'",
+              "action": "keep_only",
+              "keptScholarships": ["21a3ef1f-75a3-4968-b571-cc5a98f9dd8e"],
+              "eliminationMessage": "Eligible for: Jo-Anne Koch for Bright Children Society Scholarship"
+            },
+            {
+              "ruleId": "R6_G",
+              "condition": "value == 'arts_graduate'",
+              "action": "keep_only",
+              "keptScholarships": ["cc5d3c40-3e49-49a5-8166-ad13fa23689d"],
+              "eliminationMessage": "Arts graduate students eligible for: Arts Graduate Scholarship"
+            }
+          ],
+          "helpText": "Your field of study is the primary filter for scholarship eligibility"
+        },
+        {
+          "questionId": "Q7",
+          "questionText": "What type of agriculture program are you enrolled in?",
+          "questionType": "single_choice",
+          "required": true,
+          "conditionalDisplay": {
+            "showIf": "Q6.value == 'agriculture'"
+          },
+          "options": [
+            {
+              "optionId": "Q7_A",
+              "optionText": "Diploma program",
+              "value": "diploma"
+            },
+            {
+              "optionId": "Q7_B",
+              "optionText": "Degree program",
+              "value": "degree"
+            },
+            {
+              "optionId": "Q7_C",
+              "optionText": "Crop production/processing technology focus",
+              "value": "crop_tech"
+            },
+            {
+              "optionId": "Q7_D",
+              "optionText": "Other agriculture program",
+              "value": "other_ag"
+            }
+          ],
+          "scholarshipPreferences": [
+            {
+              "scholarshipId": "ceb70da4-29f0-403c-b2d2-ab10677860de",
+              "preferenceNote": "Alberta Excellence in Agriculture offers 2 awards for diploma and 2 for degree programs"
+            },
+            {
+              "scholarshipId": "2d4be9ee-ba07-4762-a463-2b2f867deb34",
+              "preferenceNote": "Eugene Boyko Memorial requires crop production/processing technology focus"
+            }
+          ],
+          "eliminationRules": [
+            {
+              "ruleId": "R7_A",
+              "condition": "value == 'crop_tech'",
+              "action": "add_preference",
+              "preferredScholarships": ["2d4be9ee-ba07-4762-a463-2b2f867deb34"],
+              "eliminationMessage": "Crop tech focus makes you eligible for Eugene Boyko Memorial"
+            }
+          ],
+          "helpText": "Different agriculture scholarships target different program types"
+        }
+      ]
+    },
+    {
+      "tierId": "tier4",
+      "tierName": "Academic Performance",
+      "tierDescription": "Reduces pool by 20-40%",
+      "tierOrder": 4,
+      "estimatedEliminationRate": "20-40%",
+      "questions": [
+        {
+          "questionId": "Q8",
+          "questionText": "What is your current GPA or average?",
+          "questionType": "single_choice",
+          "required": true,
+          "conditionalDisplay": {
+            "showIf": "Q3.value == 'second_plus_undergrad' OR Q3.value == 'masters_student' OR Q3.value == 'doctoral_student'"
+          },
+          "options": [
+            {
+              "optionId": "Q8_A",
+              "optionText": "Below 3.0 GPA (80%)",
+              "value": "below_3.0"
+            },
+            {
+              "optionId": "Q8_B",
+              "optionText": "3.0 - 3.5 GPA (80-87.5%)",
+              "value": "3.0_to_3.5"
+            },
+            {
+              "optionId": "Q8_C",
+              "optionText": "Above 3.5 GPA (87.5%+)",
+              "value": "above_3.5"
+            },
+            {
+              "optionId": "Q8_D",
+              "optionText": "Top 2% of my program",
+              "value": "top_2_percent"
+            }
+          ],
+          "eliminationRules": [
+            {
+              "ruleId": "R8_A",
+              "condition": "value == 'below_3.0'",
+              "action": "eliminate",
+              "eliminatedScholarships": ["040fb905-de32-48bc-8511-4b53440f313c"],
+              "eliminationMessage": "Keyera Energy requires minimum 3.0 GPA"
+            },
+            {
+              "ruleId": "R8_B",
+              "condition": "value != 'top_2_percent'",
+              "action": "eliminate",
+              "eliminatedScholarships": ["3af9061d-53df-4f0b-9a2e-cf2c07890067"],
+              "eliminationMessage": "Louise McKinney Study Outside Alberta requires top 2% class standing"
+            }
+          ],
+          "helpText": "Minimum GPA requirements vary by scholarship"
+        },
+        {
+          "questionId": "Q9",
+          "questionText": "Have you completed the following qualifying courses?",
+          "questionType": "multiple_choice",
+          "required": false,
+          "conditionalDisplay": {
+            "showIf": "Q3.value == 'high_school_graduate'"
+          },
+          "options": [
+            {
+              "optionId": "Q9_A",
+              "optionText": "Biology 30",
+              "value": "biology_30",
+              "metadata": {
+                "courseType": "science"
+              }
+            },
+            {
+              "optionId": "Q9_B",
+              "optionText": "Chemistry 30",
+              "value": "chemistry_30",
+              "metadata": {
+                "courseType": "science"
+              }
+            },
+            {
+              "optionId": "Q9_C",
+              "optionText": "Physics 30",
+              "value": "physics_30",
+              "metadata": {
+                "courseType": "science"
+              }
+            },
+            {
+              "optionId": "Q9_D",
+              "optionText": "Science 30",
+              "value": "science_30",
+              "metadata": {
+                "courseType": "science"
+              }
+            },
+            {
+              "optionId": "Q9_E",
+              "optionText": "English 30 / English 30-1 / English 30-2",
+              "value": "english_30",
+              "metadata": {
+                "courseType": "english"
+              }
+            },
+            {
+              "optionId": "Q9_F",
+              "optionText": "Français 30-1 / Français 30-2",
+              "value": "francais_30",
+              "metadata": {
+                "courseType": "french"
+              }
+            },
+            {
+              "optionId": "Q9_G",
+              "optionText": "Pure Mathematics 30 / Applied Mathematics 30 / Mathematics 31 / Mathematics 30-1 or 30-2",
+              "value": "math_30",
+              "metadata": {
+                "courseType": "math"
+              }
+            },
+            {
+              "optionId": "Q9_H",
+              "optionText": "Social Studies 30, 30-1 or 30-2",
+              "value": "social_30",
+              "metadata": {
+                "courseType": "social"
+              }
+            }
+          ],
+          "validationRules": [
+            {
+              "scholarshipId": "8c85de79-8174-480e-b168-27967213c9b5",
+              "requiredCourses": {
+                "minimumCount": 2,
+                "fromList": ["biology_30", "chemistry_30", "physics_30", "science_30"]
+              },
+              "description": "Janet and Horace Allen Science Scholarship requires two science courses"
+            },
+            {
+              "scholarshipId": "e6b5d8e3-6c8d-4395-b035-14afe1e64363",
+              "requiredCourses": {
+                "english": {
+                  "count": 1,
+                  "fromList": ["english_30", "francais_30"]
+                },
+                "additional": {
+                  "count": 2,
+                  "fromList": ["math_30", "science_30", "biology_30", "chemistry_30", "physics_30", "social_30"]
+                }
+              },
+              "description": "Anna and John Kolesar Memorial requires 1 English and 2 additional qualifying courses"
+            }
+          ],
+          "helpText": "Select all courses you have completed with final marks recorded on your transcript"
+        },
+        {
+          "questionId": "Q9_SUB",
+          "questionText": "Please enter your final marks for the selected courses (required for selection)",
+          "questionType": "course_marks_input",
+          "required": false,
+          "conditionalDisplay": {
+            "showIf": "Q9.selectedOptions.length > 0"
+          },
+          "inputFields": [
+            {
+              "fieldId": "course_mark",
+              "fieldType": "number",
+              "minValue": 0,
+              "maxValue": 100,
+              "placeholder": "Enter final mark (%)"
+            },
+            {
+              "fieldId": "diploma_exam_mark",
+              "fieldType": "number",
+              "minValue": 0,
+              "maxValue": 100,
+              "placeholder": "Enter diploma exam mark (%) - optional"
+            }
+          ],
+          "helpText": "Marks are used for selection; diploma exam marks may be used as tiebreakers"
+        },
+        {
+          "questionId": "Q10_HSE",
+          "questionText": "What was your average in your high school equivalency program?",
+          "questionType": "single_choice",
+          "required": true,
+          "conditionalDisplay": {
+            "showIf": "Q3.value == 'high_school_equiv'"
+          },
+          "options": [
+            {
+              "optionId": "Q10_HSE_A",
+              "optionText": "Below 80% (or below 3.0 GPA)",
+              "value": "below_80"
+            },
+            {
+              "optionId": "Q10_HSE_B",
+              "optionText": "80% or higher (or 3.0+ GPA)",
+              "value": "80_plus"
+            }
+          ],
+          "eliminationRules": [
+            {
+              "ruleId": "R10_HSE",
+              "condition": "value == 'below_80'",
+              "action": "eliminate",
+              "eliminatedScholarships": ["1c01ecaa-ea06-4b48-80a8-af3ab2aef07f"],
+              "eliminationMessage": "Adult High School Equivalency Scholarship requires minimum 80% average"
+            }
+          ],
+          "helpText": "Minimum 80% average or 3.0 GPA required for Adult High School Equivalency Scholarship"
+        }
+      ]
+    },
+    {
+      "tierId": "tier5",
+      "tierName": "Special Circumstances & Preferences",
+      "tierDescription": "Final differentiation - 10-30%",
+      "tierOrder": 5,
+      "estimatedEliminationRate": "10-30%",
+      "questions": [
+        {
+          "questionId": "Q10",
+          "questionText": "Do any of these special circumstances apply to you? (Select all that apply)",
+          "questionType": "multiple_choice",
+          "required": false,
+          "options": [
+            {
+              "optionId": "Q10_A",
+              "optionText": "I am a graduate of École Olds High School",
+              "value": "ecole_olds_graduate",
+              "scholarshipImpact": {
+                "scholarshipId": "e55f8280-2aba-44cc-8548-1ab1eebd931a",
+                "impactType": "required",
+                "description": "Required for Helen and George Kilik Scholarship"
+              }
+            },
+            {
+              "optionId": "Q10_B",
+              "optionText": "I am a graduate of Crowsnest Consolidated High School",
+              "value": "crowsnest_graduate",
+              "scholarshipImpact": {
+                "scholarshipId": "8c85de79-8174-480e-b168-27967213c9b5",
+                "impactType": "preference",
+                "description": "Preference for Janet and Horace Allen Science Scholarship"
+              }
+            },
+            {
+              "optionId": "Q10_C",
+              "optionText": "I am a member, child, or grandchild of an Alberta Federation of Agriculture member",
+              "value": "afa_member",
+              "scholarshipImpact": {
+                "scholarshipId": "e4b8cec2-1221-496f-85ef-c1e1edde8a09",
+                "impactType": "preference",
+                "description": "Preference for Alberta Federation of Agriculture Scholarship"
+              }
+            },
+            {
+              "optionId": "Q10_D",
+              "optionText": "I have completed the Green Certificate Program",
+              "value": "green_certificate",
+              "scholarshipImpact": {
+                "scholarshipId": "ceb70da4-29f0-403c-b2d2-ab10677860de",
+                "impactType": "preference",
+                "description": "Preference for Alberta Excellence in Agriculture Scholarship"
+              }
+            },
+            {
+              "optionId": "Q10_E",
+              "optionText": "I am a previous year's recipient of Keyera Energy scholarship with 3.0+ GPA",
+              "value": "keyera_previous",
+              "scholarshipImpact": {
+                "scholarshipId": "040fb905-de32-48bc-8511-4b53440f313c",
+                "impactType": "preference",
+                "description": "Preference for Keyera Energy Peter J. Renton Memorial Scholarship"
+              }
+            },
+            {
+              "optionId": "Q10_F",
+              "optionText": "Neither of my parents obtained a university degree",
+              "value": "first_generation",
+              "scholarshipImpact": {
+                "scholarshipId": "e6b5d8e3-6c8d-4395-b035-14afe1e64363",
+                "impactType": "required",
+                "description": "Required for Anna and John Kolesar Memorial Scholarship"
+              }
+            },
+            {
+              "optionId": "Q10_G",
+              "optionText": "I have been out of high school for 3+ years before starting high school equivalency",
+              "value": "out_of_school_3_years",
+              "scholarshipImpact": {
+                "scholarshipId": "1c01ecaa-ea06-4b48-80a8-af3ab2aef07f",
+                "impactType": "required",
+                "description": "Required for Adult High School Equivalency Scholarship"
+              }
+            },
+            {
+              "optionId": "Q10_H",
+              "optionText": "None of the above",
+              "value": "none"
+            }
+          ],
+          "eliminationRules": [
+            {
+              "ruleId": "R10_A",
+              "condition": "!selectedValues.includes('ecole_olds_graduate')",
+              "action": "eliminate",
+              "eliminatedScholarships": ["e55f8280-2aba-44cc-8548-1ab1eebd931a"],
+              "eliminationMessage": "Helen and George Kilik Scholarship requires École Olds High School graduation"
+            },
+            {
+              "ruleId": "R10_B",
+              "condition": "!selectedValues.includes('first_generation')",
+              "action": "eliminate",
+              "eliminatedScholarships": ["e6b5d8e3-6c8d-4395-b035-14afe1e64363"],
+              "eliminationMessage": "Anna and John Kolesar Memorial requires first-generation university student status"
+            },
+            {
+              "ruleId": "R10_C",
+              "condition": "!selectedValues.includes('out_of_school_3_years')",
+              "action": "eliminate",
+              "eliminatedScholarships": ["1c01ecaa-ea06-4b48-80a8-af3ab2aef07f"],
+              "eliminationMessage": "Adult High School Equivalency requires 3+ years out of high school"
+            }
+          ],
+          "helpText": "Special circumstances can make you eligible or give you preference for certain scholarships"
+        },
+        {
+          "questionId": "Q11",
+          "questionText": "For graduate students: Have you completed at least one full year of graduate study or a master's degree?",
+          "questionType": "single_choice",
+          "required": true,
+          "conditionalDisplay": {
+            "showIf": "Q3.value == 'doctoral_student'"
+          },
+          "options": [
+            {
+              "optionId": "Q11_A",
+              "optionText": "Yes - Completed 1+ year of graduate study or master's degree",
+              "value": "yes"
+            },
+            {
+              "optionId": "Q11_B",
+              "optionText": "No - First year doctoral student",
+              "value": "no"
+            }
+          ],
+          "scholarshipImpact": [
+            {
+              "scholarshipId": "4625ad2f-c6ee-4ee5-ac9a-60b6f9130e09",
+              "awardDifferentiation": {
+                "if_yes": "$20,000 doctoral level award",
+                "if_no": "$15,000 master's level award"
+              }
+            }
+          ],
+          "helpText": "This determines your award level for Sir James Lougheed Award of Distinction"
+        },
+        {
+          "questionId": "Q12",
+          "questionText": "Is your program of study offered at any Alberta institution?",
+          "questionType": "single_choice",
+          "required": true,
+          "conditionalDisplay": {
+            "showIf": "Q5.value == 'canada_other' OR Q5.value == 'international_other'"
+          },
+          "options": [
+            {
+              "optionId": "Q12_A",
+              "optionText": "No - This program is NOT offered in Alberta",
+              "value": "not_offered"
+            },
+            {
+              "optionId": "Q12_B",
+              "optionText": "Yes - This program IS offered in Alberta",
+              "value": "offered"
+            }
+          ],
+          "conditionalQuestions": [
+            {
+              "triggeredBy": "Q12_A",
+              "subQuestionId": "Q12_SUB",
+              "subQuestionText": "Please describe your program of study and explain how it differs from programs available in Alberta",
+              "questionType": "text_area",
+              "required": true,
+              "maxLength": 500,
+              "helpText": "This explanation is required for Louise McKinney Study Outside Alberta scholarship"
+            }
+          ],
+          "eliminationRules": [
+            {
+              "ruleId": "R12",
+              "condition": "value == 'offered'",
+              "action": "eliminate",
+              "eliminatedScholarships": ["3af9061d-53df-4f0b-9a2e-cf2c07890067"],
+              "eliminationMessage": "Louise McKinney Study Outside Alberta requires program NOT available in Alberta"
+            }
+          ],
+          "helpText": "Louise McKinney scholarship requires your program to be unavailable in Alberta"
+        },
+        {
+          "questionId": "Q13",
+          "questionText": "Have you previously received any of the following scholarships?",
+          "questionType": "multiple_choice",
+          "required": false,
+          "options": [
+            {
+              "optionId": "Q13_A",
+              "optionText": "Sir James Lougheed Award of Distinction (twice)",
+              "value": "lougheed_twice",
+              "scholarshipId": "4625ad2f-c6ee-4ee5-ac9a-60b6f9130e09"
+            },
+            {
+              "optionId": "Q13_B",
+              "optionText": "Sir James Lougheed Award of Distinction (once)",
+              "value": "lougheed_once",
+              "scholarshipId": "4625ad2f-c6ee-4ee5-ac9a-60b6f9130e09"
+            },
+            {
+              "optionId": "Q13_C",
+              "optionText": "Arts Graduate Scholarship (twice)",
+              "value": "arts_twice",
+              "scholarshipId": "cc5d3c40-3e49-49a5-8166-ad13fa23689d"
+            },
+            {
+              "optionId": "Q13_D",
+              "optionText": "Arts Graduate Scholarship (once)",
+              "value": "arts_once",
+              "scholarshipId": "cc5d3c40-3e49-49a5-8166-ad13fa23689d"
+            },
+            {
+              "optionId": "Q13_E",
+              "optionText": "Eugene Boyko Memorial Scholarship",
+              "value": "boyko",
+              "scholarshipId": "2d4be9ee-ba07-4762-a463-2b2f867deb34"
+            },
+            {
+              "optionId": "Q13_F",
+              "optionText": "None of the above",
+              "value": "none"
+            }
+          ],
+          "eliminationRules": [
+            {
+              "ruleId": "R13_A",
+              "condition": "selectedValues.includes('lougheed_twice')",
+              "action": "eliminate",
+              "eliminatedScholarships": ["4625ad2f-c6ee-4ee5-ac9a-60b6f9130e09"],
+              "eliminationMessage": "Lifetime maximum of 2 Sir James Lougheed Awards reached"
+            },
+            {
+              "ruleId": "R13_B",
+              "condition": "selectedValues.includes('arts_twice')",
+              "action": "eliminate",
+              "eliminatedScholarships": ["cc5d3c40-3e49-49a5-8166-ad13fa23689d"],
+              "eliminationMessage": "Lifetime maximum of 2 Arts Graduate Scholarships reached"
+            },
+            {
+              "ruleId": "R13_C",
+              "condition": "selectedValues.includes('boyko')",
+              "action": "eliminate",
+              "eliminatedScholarships": ["2d4be9ee-ba07-4762-a463-2b2f867deb34"],
+              "eliminationMessage": "Cannot receive Eugene Boyko Memorial Scholarship more than once"
+            }
+          ],
+          "helpText": "Some scholarships have lifetime maximum limits"
+        }
+      ]
+    },
+    {
+      "tierId": "tier6",
+      "tierName": "Institution-Specific & Final Questions",
+      "tierDescription": "Final 1-5 scholarships",
+      "tierOrder": 6,
+      "estimatedEliminationRate": "Final filtering",
+      "questions": [
+        {
+          "questionId": "Q14",
+          "questionText": "Are you enrolled at (or applying to) Harvard College for undergraduate studies?",
+          "questionType": "single_choice",
+          "required": false,
+          "conditionalDisplay": {
+            "showIf": "Q5.value == 'harvard'"
+          },
+          "options": [
+            {
+              "optionId": "Q14_A",
+              "optionText": "Yes",
+              "value": "yes"
+            },
+            {
+              "optionId": "Q14_B",
+              "optionText": "No",
+              "value": "no"
+            }
+          ],
+          "eliminationRules": [
+            {
+              "ruleId": "R14",
+              "condition": "value == 'no'",
+              "action": "eliminate",
+              "eliminatedScholarships": ["761ce3c7-afa6-4a2c-9684-95b40ec52b6e"],
+              "eliminationMessage": "Charles S. Noble Scholarship is only for Harvard College students"
+            }
+          ],
+          "additionalInfo": {
+            "applicationNote": "For Harvard scholarship, you must apply directly to Harvard College Office of Financial Aid by December 15"
+          },
+          "helpText": "This scholarship is exclusively for Harvard College undergraduate students"
+        },
+        {
+          "questionId": "Q15",
+          "questionText": "Are you involved in extra-curricular activities?",
+          "questionType": "single_choice",
+          "required": false,
+          "conditionalDisplay": {
+            "showIf": "Q10.selectedValues.includes('ecole_olds_graduate')"
+          },
+          "options": [
+            {
+              "optionId": "Q15_A",
+              "optionText": "Yes",
+              "value": "yes"
+            },
+            {
+              "optionId": "Q15_B",
+              "optionText": "No",
+              "value": "no"
+            }
+          ],
+          "eliminationRules": [
+            {
+              "ruleId": "R15",
+              "condition": "value == 'no'",
+              "action": "eliminate",
+              "eliminatedScholarships": ["e55f8280-2aba-44cc-8548-1ab1eebd931a"],
+              "eliminationMessage": "Helen and George Kilik Scholarship requires extra-curricular involvement"
+            }
+          ],
+          "helpText": "Extra-curricular activities are required for Helen and George Kilik Scholarship"
+        },
+        {
+          "questionId": "Q16",
+          "questionText": "Do you demonstrate academic achievement particularly in mathematics and science?",
+          "questionType": "single_choice",
+          "required": false,
+          "conditionalDisplay": {
+            "showIf": "Q10.selectedValues.includes('ecole_olds_graduate')"
+          },
+          "options": [
+            {
+              "optionId": "Q16_A",
+              "optionText": "Yes",
+              "value": "yes"
+            },
+            {
+              "optionId": "Q16_B",
+              "optionText": "No",
+              "value": "no"
+            }
+          ],
+          "eliminationRules": [
+            {
+              "ruleId": "R16",
+              "condition": "value == 'no'",
+              "action": "eliminate",
+              "eliminatedScholarships": ["e55f8280-2aba-44cc-8548-1ab1eebd931a"],
+              "eliminationMessage": "Helen and George Kilik Scholarship requires strong math and science achievement"
+            }
+          ],
+          "helpText": "This scholarship specifically seeks students with strength in mathematics and science"
+        },
+        {
+          "questionId": "Q17",
+          "questionText": "Have you attended both fall and winter terms in the previous academic year?",
+          "questionType": "single_choice",
+          "required": false,
+          "conditionalDisplay": {
+            "showIf": "Q3.value == 'second_plus_undergrad'"
+          },
+          "options": [
+            {
+              "optionId": "Q17_A",
+              "optionText": "Yes",
+              "value": "yes"
+            },
+            {
+              "optionId": "Q17_B",
+              "optionText": "No",
+              "value": "no"
+            }
+          ],
+          "eliminationRules": [
+            {
+              "ruleId": "R17",
+              "condition": "value == 'no'",
+              "action": "eliminate",
+              "eliminatedScholarships": [
+                "e4b8cec2-1221-496f-85ef-c1e1edde8a09",
+                "ceb70da4-29f0-403c-b2d2-ab10677860de",
+                "2d4be9ee-ba07-4762-a463-2b2f867deb34",
+                "21a3ef1f-75a3-4968-b571-cc5a98f9dd8e"
+              ],
+              "eliminationMessage": "Many scholarships require attendance in both fall and winter terms of previous year"
+            }
+          ],
+          "helpText": "Continuous full-time enrollment is required for most continuing student scholarships"
+        }
+      ]
+    }
+  ],
+  "scholarshipRegistry": [
+    {
+      "scholarshipId": "040fb905-de32-48bc-8511-4b53440f313c",
+      "scholarshipName": "Keyera Energy - Peter J. Renton Memorial Scholarship",
+      "applicationDeadline": "October 31",
+      "applicationPeriod": "August 1 to October 31",
+      "paymentTiming": "December",
+      "numberOfAwards": 2,
+      "awardValue": 3000
+    },
+    {
+      "scholarshipId": "3af9061d-53df-4f0b-9a2e-cf2c07890067",
+      "scholarshipName": "Louise McKinney Post-secondary Scholarship - Study Outside Alberta",
+      "applicationDeadline": "January 15",
+      "applicationPeriod": "August 1 to January 15",
+      "paymentTiming": "March",
+      "numberOfAwards": 10,
+      "awardValue": 2500
+    },
+    {
+      "scholarshipId": "4625ad2f-c6ee-4ee5-ac9a-60b6f9130e09",
+      "scholarshipName": "Sir James Lougheed Award of Distinction",
+      "applicationDeadline": "November 30",
+      "applicationPeriod": "August 1 to November 30",
+      "paymentTiming": "March",
+      "numberOfAwards": 15,
+      "awardValue": {
+        "masters": 15000,
+        "doctoral": 20000
+      }
+    },
+    {
+      "scholarshipId": "c52f7ca2-88e0-4ff8-8840-c166e2fd052b",
+      "scholarshipName": "Tiessen Foundation Broadcast Scholarship",
+      "applicationDeadline": "October 31",
+      "applicationPeriod": "August 1 to October 31",
+      "paymentTiming": "December",
+      "numberOfAwards": 1,
+      "awardValue": 750
+    },
+    {
+      "scholarshipId": "e4b8cec2-1221-496f-85ef-c1e1edde8a09",
+      "scholarshipName": "Alberta Federation of Agriculture Scholarship",
+      "applicationDeadline": "October 31",
+      "applicationPeriod": "August 1 to October 31",
+      "paymentTiming": "December",
+      "numberOfAwards": 1,
+      "awardValue": 500
+    },
+    {
+      "scholarshipId": "ceb70da4-29f0-403c-b2d2-ab10677860de",
+      "scholarshipName": "Alberta Excellence in Agriculture Scholarship",
+      "applicationDeadline": "October 31",
+      "applicationPeriod": "August 1 to October 31",
+      "paymentTiming": "December",
+      "numberOfAwards": 4,
+      "awardValue": 1500
+    },
+    {
+      "scholarshipId": "e55f8280-2aba-44cc-8548-1ab1eebd931a",
+      "scholarshipName": "Helen and George Kilik Scholarship",
+      "applicationDeadline": "Contact École Olds High School",
+      "applicationPeriod": "Contact school for details",
+      "paymentTiming": "November",
+      "numberOfAwards": 2,
+      "awardValue": 1000
+    },
+    {
+      "scholarshipId": "8c85de79-8174-480e-b168-27967213c9b5",
+      "scholarshipName": "Janet and Horace Allen Science Scholarship",
+      "applicationDeadline": "October 31",
+      "applicationPeriod": "August 1 to October 31",
+      "paymentTiming": "December",
+      "numberOfAwards": 1,
+      "awardValue": 1500
+    },
+    {
+      "scholarshipId": "21a3ef1f-75a3-4968-b571-cc5a98f9dd8e",
+      "scholarshipName": "Jo-Anne Koch for Bright Children Society Scholarship",
+      "applicationDeadline": "October 31",
+      "applicationPeriod": "August 1 to October 31",
+      "paymentTiming": "December",
+      "numberOfAwards": 1,
+      "awardValue": 1500
+    },
+    {
+      "scholarshipId": "761ce3c7-afa6-4a2c-9684-95b40ec52b6e",
+      "scholarshipName": "Charles S. Noble Scholarship for Study at Harvard",
+      "applicationDeadline": "December 15",
+      "applicationPeriod": "August 1 to December 15",
+      "paymentTiming": "March",
+      "numberOfAwards": 3,
+      "awardValue": 10000
+    },
+    {
+      "scholarshipId": "2d4be9ee-ba07-4762-a463-2b2f867deb34",
+      "scholarshipName": "Alberta Barley Commission Eugene Boyko Memorial Scholarship",
+      "applicationDeadline": "October 31",
+      "applicationPeriod": "August 1 to October 31",
+      "paymentTiming": "December",
+      "numberOfAwards": 1,
+      "awardValue": 500
+    },
+    {
+      "scholarshipId": "e6b5d8e3-6c8d-4395-b035-14afe1e64363",
+      "scholarshipName": "Anna and John Kolesar Memorial Scholarship",
+      "applicationDeadline": "October 31",
+      "applicationPeriod": "August 1 to October 31",
+      "paymentTiming": "November",
+      "numberOfAwards": 1,
+      "awardValue": 1500
+    },
+    {
+      "scholarshipId": "cc5d3c40-3e49-49a5-8166-ad13fa23689d",
+      "scholarshipName": "Arts Graduate Scholarship",
+      "applicationDeadline": "November 30",
+      "applicationPeriod": "August 1 to November 30",
+      "paymentTiming": "March",
+      "numberOfAwards": 7,
+      "awardValue": 15000
+    },
+    {
+      "scholarshipId": "1c01ecaa-ea06-4b48-80a8-af3ab2aef07f",
+      "scholarshipName": "Adult High School Equivalency Scholarship",
+      "applicationDeadline": "January 15",
+      "applicationPeriod": "August 1 to January 15",
+      "paymentTiming": "After confirmation of enrollment",
+      "numberOfAwards": 200,
+      "awardValue": 500
+    }
+  ],
+  "processingInstructions": {
+    "questionFlowLogic": "Progressive elimination - start with Tier 1 and proceed through tiers sequentially",
+    "eliminationStrategy": "Apply elimination rules immediately when answer provided",
+    "preferenceHandling": "Track preferences separately from eliminations; apply during final ranking",
+    "tieBreaking": "Use scholarship-specific criteria (e.g., diploma exam marks, GPA) as specified in scholarship details",
+    "finalOutput": {
+      "eligibleScholarships": "List of scholarship IDs that passed all elimination rules",
+      "preferredScholarships": "Subset with preference factors",
+      "eliminatedScholarships": "List with reasons for elimination",
+      "requiredDocuments": "Aggregated list based on eligible scholarships",
+      "applicationDeadlines": "Sorted by earliest deadline"
+    }
+  }
+}
