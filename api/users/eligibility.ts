@@ -1,6 +1,6 @@
 import { api, APIError } from "encore.dev/api";
 import { db } from "./database";
-import {eligibilitySubmissions} from "./schema.ts";
+import { eligibilitySubmissions } from "./schema";
 
 export interface SubmitEligibilityRequest {
   eligibleScholarshipIds: string[];
@@ -30,11 +30,13 @@ export const submit = api(
         );
       }
       const answers = body.answers ?? {};
-      const row = await db.eligibilitySubmissions<{ id: number }>`
-        INSERT INTO eligibility_submissions (eligible_scholarship_ids, answers)
-        VALUES (${JSON.stringify(body.eligibleScholarshipIds)}::jsonb, ${JSON.stringify(answers)}::jsonb)
-        RETURNING id
-      `;
+      const [row] = await db
+        .insert(eligibilitySubmissions)
+        .values({
+          eligibleScholarshipIds: body.eligibleScholarshipIds,
+          answers,
+        })
+        .returning({ id: eligibilitySubmissions.id });
       const submissionId = row?.id ?? 0;
       return { success: true, submissionId };
     } catch (error) {

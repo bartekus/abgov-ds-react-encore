@@ -16,7 +16,7 @@ export function EligibilityQuestionnaire() {
         setError(null);
         setIsSubmitting(true);
         try {
-            const result = await api.eligibility.submit({
+            const result = await api.users.submit({
                 eligibleScholarshipIds,
                 answers,
             });
