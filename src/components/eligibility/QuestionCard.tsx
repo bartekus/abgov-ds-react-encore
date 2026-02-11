@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
     GoabRadioGroup,
+    GoabRadioItem,
     GoabCheckbox,
     GoabTextArea,
     GoabInput,
@@ -74,6 +75,12 @@ export function QuestionCard({
         }
     };
 
+    const handleCourseMarkChange = (fieldId: string, value: string) => {
+        const newSubAnswers = { ...subAnswers, [fieldId]: value };
+        setSubAnswers(newSubAnswers);
+        onAnswer(question.questionId, answer?.value ?? '', newSubAnswers);
+    };
+
     const renderConditionalQuestion = (cq: ConditionalQuestion) => {
         if (cq.questionType === 'single_choice' && cq.options) {
             return (
@@ -82,9 +89,12 @@ export function QuestionCard({
                     <GoabRadioGroup
                         name={cq.subQuestionId}
                         value={(subAnswers[cq.subQuestionId] as string) || ''}
-                        onChange={(name, val) => handleSubAnswer(cq.subQuestionId, val)}
-                        items={cq.options.map(o => ({ value: o.value, label: o.optionText }))}
-                    />
+                        onChange={(detail) => handleSubAnswer(cq.subQuestionId, detail.value)}
+                    >
+                        {cq.options.map(o => (
+                            <GoabRadioItem key={o.optionId} value={o.value} label={o.optionText} />
+                        ))}
+                    </GoabRadioGroup>
                 </div>
             );
         }
@@ -96,7 +106,7 @@ export function QuestionCard({
                     <GoabTextArea
                         name={cq.subQuestionId}
                         value={(subAnswers[cq.subQuestionId] as string) || ''}
-                        onChange={(name, val) => handleSubAnswer(cq.subQuestionId, val)}
+                        onChange={(detail) => handleSubAnswer(cq.subQuestionId, detail.value)}
                         width="100%"
                     />
                 </div>
@@ -129,12 +139,12 @@ export function QuestionCard({
                 <GoabRadioGroup
                     name={question.questionId}
                     value={answer?.value as string || ''}
-                    onChange={handleSingleChoice}
-                    items={question.options?.map(o => ({
-                        value: o.value,
-                        label: o.optionText
-                    })) || []}
-                />
+                    onChange={(detail) => handleSingleChoice(detail.name, detail.value)}
+                >
+                    {question.options?.map(o => (
+                        <GoabRadioItem key={o.optionId} value={o.value} label={o.optionText} />
+                    ))}
+                </GoabRadioGroup>
             ) : null}
 
             {question.questionType === 'multiple_choice' ? (
@@ -148,7 +158,7 @@ export function QuestionCard({
                                 checked={isChecked}
                                 text={option.optionText}
                                 value={option.value}
-                                onChange={(name, checked) => handleMultipleChoice(name, checked, option.value)}
+                                onChange={(detail) => handleMultipleChoice(detail.name, detail.checked, option.value)}
                             />
                         );
                     })}
@@ -164,11 +174,9 @@ export function QuestionCard({
                             <GoabInput
                                 name={field.fieldId}
                                 type="number"
+                                value={(subAnswers[field.fieldId] as string) ?? ''}
                                 placeholder={field.placeholder || ''}
-                                // Note: handling course marks requires simpler state management or mapping back to answer
-                                // For this demo, let's assume it's like a sub-answer or just text for now
-                                // Implementation might be complex for strict type adherence
-                                onChange={() => { }} // Placeholder logic
+                                onChange={(detail) => handleCourseMarkChange(field.fieldId, detail.value)}
                             />
                         </div>
                     ))}
