@@ -20,7 +20,7 @@ export function StepIndicator({ steps, currentStepIndex }: StepIndicatorProps) {
 
                 if (isCompleted) {
                     statusColor = 'green';
-                    icon = <GoabIcon type="checkmark" size="small" style={{ color: 'white' }} />;
+                    icon = <div style={{ color: 'white', display: 'flex' }}><GoabIcon type="checkmark" size="small" /></div>;
                 } else if (isCurrent) {
                     statusColor = '#003366';
                 }

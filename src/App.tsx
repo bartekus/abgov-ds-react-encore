@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { EligibilityQuestionnaire } from "./pages/EligibilityQuestionnaire";
 import {
   GoabOneColumnLayout,
@@ -6,10 +6,9 @@ import {
   GoabAppFooter,
   GoabMicrositeHeader,
   GoabPageBlock,
+    GoabButton
 } from "@abgov/react-components";
-import Client, { Local } from "./lib/client";
-
-const client = new Client(Local);
+// import { api } from './lib/get-request-client'
 
 // Placeholder for the Index page
 function Index() {
@@ -19,9 +18,9 @@ function Index() {
       <h1>Student Aid & Scholarships</h1>
       <p>Welcome to the Alberta Student Aid portal.</p>
       <div style={{ marginTop: '20px' }}>
-        <goab-button onClick={() => navigate('/eligibility')}>
+        <GoabButton onClick={() => navigate('/eligibility')}>
           Check Eligibility
-        </goab-button>
+        </GoabButton>
       </div>
     </GoabPageBlock>
   );
@@ -30,7 +29,7 @@ function Index() {
 // Placeholder for the Scholarship Application (will be replaced in PR-05)
 import { ApplicationWizard } from "./components/wizard/ApplicationWizard";
 
-function AppContent() {
+function App() {
   return (
     <GoabOneColumnLayout>
       <section slot="header">
@@ -50,14 +49,6 @@ function AppContent() {
         <GoabAppFooter />
       </section>
     </GoabOneColumnLayout>
-  );
-}
-
-function App() {
-  return (
-    <BrowserRouter>
-      <AppContent />
-    </BrowserRouter>
   );
 }
 
