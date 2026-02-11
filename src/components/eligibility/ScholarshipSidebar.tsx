@@ -22,8 +22,8 @@ function formatAwardValue(value: number | ScholarshipAwardValue): string {
 export function ScholarshipSidebar({
     scholarships,
     eligibleIds,
-    eliminatedScholarships,
-    isAdminMode,
+    eliminatedScholarships: _eliminatedScholarships,
+    isAdminMode: _isAdminMode,
 }: ScholarshipSidebarProps) {
     const eligible = useMemo(
         () => scholarships.filter((s) => eligibleIds.includes(s.scholarshipId)),
@@ -39,7 +39,7 @@ export function ScholarshipSidebar({
                 {/* Status Card */}
                 <div style={{ padding: '16px', backgroundColor: 'white', border: '1px solid #ccc', borderRadius: '4px', marginBottom: '16px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                        <GoabIcon type="ribbon" size="medium" style={{ color: 'green' }} />
+                        <GoabIcon type="ribbon" size="medium" fillColor="green" />
                         <span style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{eligible.length}</span>
                         <span>Eligible Scholarships</span>
                     </div>

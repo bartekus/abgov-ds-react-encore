@@ -22,8 +22,8 @@ interface QuestionCardProps {
 
 export function QuestionCard({
     question,
-    tierOrder,
-    tierName,
+    tierOrder: _tierOrder,
+    tierName: _tierName,
     answer,
     onAnswer,
     isAdminMode,
@@ -50,11 +50,11 @@ export function QuestionCard({
         }
     );
 
-    const handleSingleChoice = (name: string, value: string) => {
+    const handleSingleChoice = (_name: string, value: string) => {
         onAnswer(question.questionId, value, subAnswers);
     };
 
-    const handleMultipleChoice = (name: string, checked: boolean, value: string) => {
+    const handleMultipleChoice = (_name: string, checked: boolean, value: string) => {
         const currentValues = Array.isArray(answer?.value) ? answer.value : [];
         let newValues: string[];
 
@@ -132,7 +132,7 @@ export function QuestionCard({
                     </div>
                     <h3 style={{ fontSize: '1.1rem', fontWeight: 600 }}>{question.questionText}</h3>
                 </div>
-                {isAnswered && <GoabIcon type="checkmark-circle" theme="outline" size="medium" style={{ color: 'green' }} />}
+                {isAnswered && <GoabIcon type="checkmark-circle" theme="outline" size="medium" fillColor="green" />}
             </div>
 
             {question.questionType === 'single_choice' ? (

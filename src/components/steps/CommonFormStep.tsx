@@ -16,15 +16,10 @@ export function CommonFormStep({
     formDefinitions,
     values,
     onFieldChange,
-    onFieldBlur,
     onNext,
     onBack,
     eligibleCount,
 }: CommonFormStepProps) {
-
-    // Simple validation check: ensure at least some fields are filled
-    // In a real app, we would loop through all required fields in formDefinitions and check values.
-    const isValid = true;
 
     const handleNext = () => {
         // Trigger validation logic if needed

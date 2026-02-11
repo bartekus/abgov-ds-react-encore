@@ -1,11 +1,10 @@
-import React from 'react';
 import {
     GoabInput,
     GoabDropdown,
     GoabDropdownItem,
     GoabTextArea,
-    GoabCheckbox,
     GoabRadioGroup,
+    GoabRadioItem,
     GoabDatePicker,
     GoabFormItem,
 } from '@abgov/react-components';
@@ -114,11 +113,9 @@ export function GoabDynamicFormField({
                         value={inputValue as string}
                         onChange={handleRadioChange}
                         error={isInvalid}
-                        items={[
-                            { value: 'Yes', label: 'Yes' },
-                            { value: 'No', label: 'No' }
-                        ]}
                     >
+                        <GoabRadioItem value="Yes" label="Yes" />
+                        <GoabRadioItem value="No" label="No" />
                     </GoabRadioGroup>
                 </GoabFormItem>
             );

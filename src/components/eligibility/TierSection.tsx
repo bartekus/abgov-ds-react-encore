@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { GoabContainer, GoabBadge, GoabIcon, GoabButton } from '@abgov/react-components';
+import { GoabBadge, GoabIcon } from '@abgov/react-components';
 import { QuestionCard } from './QuestionCard';
 import type { QuestionTier, Question, Answer } from '../../types/eligibility';
 

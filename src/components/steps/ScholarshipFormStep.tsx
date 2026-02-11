@@ -23,7 +23,7 @@ export function ScholarshipFormStep({
     values,
     uploadedDocuments,
     onFieldChange,
-    onFieldBlur,
+    onFieldBlur: _onFieldBlur,
     onDocumentUpload,
     onNext,
     onBack,
@@ -44,9 +44,12 @@ export function ScholarshipFormStep({
                 <GoabFormSection
                     key={section.sectionId}
                     section={section}
-                    values={values}
-                    onFieldChange={onFieldChange}
-                    onFieldBlur={onFieldBlur}
+                    formData={{
+                        common: {},
+                        scholarships: { [scholarship.scholarshipId]: values },
+                    }}
+                    onChange={(fieldId, val) => onFieldChange(fieldId, val)}
+                    scholarshipId={scholarship.scholarshipId}
                 />
             ))}
 
@@ -55,8 +58,9 @@ export function ScholarshipFormStep({
                     <h3 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '16px' }}>Required Documents</h3>
                     <GoabRequiredDocuments
                         documents={scholarship.requiredDocuments}
-                        uploadedFiles={uploadedDocuments} // Mapped properly? GoabRequiredDocuments expected Map or similar?
-                        onUpload={onDocumentUpload}
+                        uploadedFiles={uploadedDocuments}
+                        onUpload={(docId, file) => onDocumentUpload(docId, file)}
+                        onRemove={(docId) => onDocumentUpload(docId, null)}
                     />
                 </div>
             )}

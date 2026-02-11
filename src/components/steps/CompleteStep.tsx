@@ -8,7 +8,9 @@ interface CompleteStepProps {
 export function CompleteStep({ scholarshipCount, onReset }: CompleteStepProps) {
     return (
         <div style={{ textAlign: 'center', padding: '48px 24px' }}>
-            <GoabIcon type="checkmark-circle" size="large" style={{ color: 'green', marginBottom: '16px' }} />
+            <span style={{ display: 'block', marginBottom: '16px' }}>
+                <GoabIcon type="checkmark-circle" size="large" fillColor="green" />
+            </span>
             <h1>Application Submitted!</h1>
             <p style={{ fontSize: '1.2rem', marginBottom: '32px' }}>
                 You have successfully submitted applications for <b>{scholarshipCount}</b> scholarships.

@@ -1,4 +1,4 @@
-import { GoabFileUploadCard, GoabButton, GoabIcon } from '@abgov/react-components';
+import { GoabFileUploadInput, GoabButton, GoabIcon } from '@abgov/react-components';
 import { RequiredDocument } from '../../types/formDefinitions';
 
 interface GoabRequiredDocumentsProps {
@@ -15,15 +15,9 @@ export function GoabRequiredDocuments({
     onRemove
 }: GoabRequiredDocumentsProps) {
 
-    const handleFileSelect = (docId: string, event: CustomEvent) => {
-        // GoabFileUploadCard detail contains { file: File } or similar?
-        // Need to verify the event signature for GoabFileUploadCard
-        // Assuming standard CustomEvent with detail.file or detail.filename
-        console.log('Upload event', event.detail);
-        // Mocking file object since we can't easily get it from web component event in this context without testing
-        // Actually, standard is detail.file
-        if (event.detail && event.detail.file) {
-            onUpload(docId, event.detail.file);
+    const handleFileSelect = (docId: string, detail: { file?: File }) => {
+        if (detail?.file) {
+            onUpload(docId, detail.file);
         }
     };
 
@@ -56,10 +50,9 @@ export function GoabRequiredDocuments({
 
                         <div style={{ marginLeft: '16px' }}>
                             {!file ? (
-                                <GoabFileUploadCard
-                                    filename={doc.documentId}
-                                    maxSize="10MB"
-                                    onFileSelected={(e: never) => handleFileSelect(doc.documentId, e)}
+                                <GoabFileUploadInput
+                                    maxFileSize="10MB"
+                                    onSelectFile={(detail) => handleFileSelect(doc.documentId, detail)}
                                 />
                             ) : (
                                 <GoabButton type="secondary" onClick={() => onRemove(doc.documentId)} variant="destructive">

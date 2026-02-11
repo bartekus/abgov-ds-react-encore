@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { GoabContainer, GoabButton, GoabIcon } from '@abgov/react-components';
+import { GoabButton } from '@abgov/react-components';
 import { useEligibility } from '../../hooks/useEligibility';
 import { TierSection } from '../eligibility/TierSection';
 import { ScholarshipSidebar } from '../eligibility/ScholarshipSidebar';
@@ -26,7 +26,7 @@ interface EligibilityStepProps {
 }
 
 export function EligibilityStep({ onComplete, isSubmitting = false }: EligibilityStepProps) {
-    const [isAdminMode, setIsAdminMode] = useState(false);
+    const [isAdminMode] = useState(false);
     const data = useMemo(() => parseEligibilityData(), []);
 
     const {
@@ -37,7 +37,6 @@ export function EligibilityStep({ onComplete, isSubmitting = false }: Eligibilit
         progress,
         allScholarships,
         tiers,
-        metadata,
     } = useEligibility(data);
 
     const canProceed = state.eligibleScholarships.length > 0 && progress > 0; // Simplified progress check

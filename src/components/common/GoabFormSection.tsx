@@ -1,5 +1,4 @@
-import React from 'react';
-import { GoabContainer, GoabGrid } from '@abgov/react-components';
+import { GoabGrid } from '@abgov/react-components';
 import { FormSection, ApplicationFormData } from '../../types/formDefinitions';
 import { GoabDynamicFormField } from './GoabDynamicFormField';
 
@@ -8,6 +7,8 @@ interface GoabFormSectionProps {
     formData: ApplicationFormData;
     onChange: (fieldId: string, value: any, isValid: boolean) => void;
     showErrors?: boolean;
+    /** When provided, values are read from formData.scholarships[scholarshipId] */
+    scholarshipId?: string;
 }
 
 export function GoabFormSection({
@@ -15,18 +16,14 @@ export function GoabFormSection({
     formData,
     onChange,
     showErrors = false,
+    scholarshipId,
 }: GoabFormSectionProps) {
 
     // Helper to get field value safely
     const getValue = (fieldId: string) => {
-        // Check both common and scholarship specific (flattened or passed appropriately)
-        // For this component, we expect the formData to structure matches or we pass specific data subset
-        // To simplify, let's assume the paren passes the CORRECT data context or we look it up.
-        // Actually, ApplicationFormData has `common` and `scholarships`.
-        // We need to know where to look. 
-        // For now, let's assume the parent passes a simpler record<string, value> OR we handle the lookup logic here?
-        // Better pattern: Parent passes the relevant data slice.
-
+        if (scholarshipId && formData?.scholarships?.[scholarshipId]) {
+            return formData.scholarships[scholarshipId][fieldId] ?? { value: '', isValid: false, touched: false };
+        }
         const common = formData?.common;
         return common?.[fieldId] ?? { value: '', isValid: false, touched: false };
     };

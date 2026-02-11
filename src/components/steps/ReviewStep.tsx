@@ -11,7 +11,7 @@ interface ReviewStepProps {
 }
 
 export function ReviewStep({
-    formDefinitions,
+    formDefinitions: _formDefinitions,
     eligibleScholarships,
     commonValues,
     scholarshipValues,

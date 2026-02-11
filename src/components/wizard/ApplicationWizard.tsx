@@ -43,7 +43,7 @@ export function ApplicationWizard() {
         if (navState?.eligibleScholarshipIds?.length && state.eligibleScholarshipIds.length === 0) {
             setState(prev => ({
                 ...prev,
-                eligibleScholarshipIds: navState.eligibleScholarshipIds,
+                eligibleScholarshipIds: navState.eligibleScholarshipIds ?? [],
                 currentStep: 'common',
             }));
         }
