@@ -27,8 +27,8 @@ export function GoabFormSection({
         // For now, let's assume the parent passes a simpler record<string, value> OR we handle the lookup logic here?
         // Better pattern: Parent passes the relevant data slice.
 
-        // Let's change props to accept `data: Record<string, FormFieldValue>` 
-        return formData.common[fieldId] || { value: '', isValid: false, touched: false };
+        const common = formData?.common;
+        return common?.[fieldId] ?? { value: '', isValid: false, touched: false };
     };
 
     return (

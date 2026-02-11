@@ -42,9 +42,8 @@ export function CommonFormStep({
                 <GoabFormSection
                     key={section.sectionId}
                     section={section}
-                    values={values}
-                    onFieldChange={onFieldChange}
-                    onFieldBlur={onFieldBlur}
+                    formData={{ common: values, scholarships: {} }}
+                    onChange={(fieldId, val) => onFieldChange(fieldId, val)}
                 />
             ))}
 
