@@ -37,13 +37,11 @@ function App() {
         <GoabAppHeader url="/" heading="Student Aid" />
       </section>
 
-      <section slot="content">
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/eligibility" element={<EligibilityQuestionnaire />} />
-          <Route path="/scholarship-application" element={<ApplicationWizard />} />
-        </Routes>
-      </section>
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/eligibility" element={<EligibilityQuestionnaire />} />
+        <Route path="/scholarship-application" element={<ApplicationWizard />} />
+      </Routes>
 
       <section slot="footer">
         <GoabAppFooter />
