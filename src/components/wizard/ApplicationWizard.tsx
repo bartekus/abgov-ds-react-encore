@@ -1,4 +1,5 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { ApplicationState, ConsolidatedFormDefinitions } from '../../types/formDefinitions';
 import { parseFormDefinitions } from '../../utils/parseFormDefinitions';
 import { StepIndicator } from './StepIndicator';
@@ -20,8 +21,33 @@ const initialState: ApplicationState = {
     isComplete: false
 };
 
+function getInitialState(location: ReturnType<typeof useLocation>): ApplicationState {
+    const navState = location.state as { eligibleScholarshipIds?: string[] } | null;
+    if (navState?.eligibleScholarshipIds?.length) {
+        return {
+            ...initialState,
+            eligibleScholarshipIds: navState.eligibleScholarshipIds,
+            currentStep: 'common',
+        };
+    }
+    return initialState;
+}
+
 export function ApplicationWizard() {
-    const [state, setState] = useState<ApplicationState>(initialState);
+    const location = useLocation();
+    const [state, setState] = useState<ApplicationState>(() => getInitialState(location));
+
+    // When arriving from eligibility page (e.g. browser back then forward), sync from location
+    useEffect(() => {
+        const navState = location.state as { eligibleScholarshipIds?: string[] } | null;
+        if (navState?.eligibleScholarshipIds?.length && state.eligibleScholarshipIds.length === 0) {
+            setState(prev => ({
+                ...prev,
+                eligibleScholarshipIds: navState.eligibleScholarshipIds,
+                currentStep: 'common',
+            }));
+        }
+    }, [location.state]);
 
     // In a real app, we might fetch this
     const formDefinitions: ConsolidatedFormDefinitions = useMemo(() => parseFormDefinitions(), []);
@@ -34,7 +60,7 @@ export function ApplicationWizard() {
     const currentScholarship = eligibleScholarships[state.currentScholarshipIndex];
 
     // Handlers
-    const handleEligibilityComplete = (eligibleIds: string[]) => {
+    const handleEligibilityComplete = (eligibleIds: string[], _answers?: Record<string, string | string[]>) => {
         setState(prev => ({
             ...prev,
             eligibleScholarshipIds: eligibleIds,

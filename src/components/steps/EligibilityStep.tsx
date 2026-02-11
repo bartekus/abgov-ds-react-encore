@@ -11,11 +11,21 @@ function parseEligibilityData(): EligibilityData {
     return eligibilityDataRaw as unknown as EligibilityData;
 }
 
-interface EligibilityStepProps {
-    onComplete?: (eligibleScholarshipIds: string[]) => void;
+/** Serialize eligibility answers for the API (questionId -> value). */
+function serializeAnswers(answers: Record<string, { value: string | string[] }>): Record<string, string | string[]> {
+    const out: Record<string, string | string[]> = {};
+    for (const [qId, a] of Object.entries(answers)) {
+        out[qId] = a.value;
+    }
+    return out;
 }
 
-export function EligibilityStep({ onComplete }: EligibilityStepProps) {
+interface EligibilityStepProps {
+    onComplete?: (eligibleScholarshipIds: string[], answers: Record<string, string | string[]>) => void;
+    isSubmitting?: boolean;
+}
+
+export function EligibilityStep({ onComplete, isSubmitting = false }: EligibilityStepProps) {
     const [isAdminMode, setIsAdminMode] = useState(false);
     const data = useMemo(() => parseEligibilityData(), []);
 
@@ -55,10 +65,10 @@ export function EligibilityStep({ onComplete }: EligibilityStepProps) {
                         <GoabButton type="secondary" onClick={resetQuestionnaire}>Reset</GoabButton>
                         <GoabButton
                             type="primary"
-                            disabled={!canProceed}
-                            onClick={() => onComplete && onComplete(state.eligibleScholarships)}
+                            disabled={!canProceed || isSubmitting}
+                            onClick={() => onComplete && onComplete(state.eligibleScholarships, serializeAnswers(state.answers))}
                         >
-                            Continue to Application
+                            {isSubmitting ? 'Submitting…' : 'Continue to Application'}
                         </GoabButton>
                     </div>
                 </div>
