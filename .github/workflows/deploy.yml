@@ -61,8 +61,59 @@ jobs:
       - name: Build Docker image
         run: /home/runner/.encore/bin/encore build docker --config ./infra.config.json abgov-ds-react-encore-ape2
 
-      - name: Tag Docker image
-        run: docker tag abgov-ds-react-encore-ape2 registry.digitalocean.com/stagecraft-ing/abgov-ds-react-encore:latest
+      - name: Tag Docker image (latest + sha)
+        env:
+          IMAGE: registry.digitalocean.com/stagecraft-ing/abgov-ds-react-encore
+          SHA: ${{ github.sha }}
+        run: |
+          SHORT_SHA="${SHA:0:12}"
+          docker tag abgov-ds-react-encore-ape2 "${IMAGE}:latest"
+          docker tag abgov-ds-react-encore-ape2 "${IMAGE}:${SHORT_SHA}"
 
-      - name: Push Docker image
-        run: docker push registry.digitalocean.com/stagecraft-ing/abgov-ds-react-encore:latest
+      - name: Push Docker image (latest + sha)
+        env:
+          IMAGE: registry.digitalocean.com/stagecraft-ing/abgov-ds-react-encore
+          SHA: ${{ github.sha }}
+        run: |
+          SHORT_SHA="${SHA:0:12}"
+          docker push "${IMAGE}:latest"
+          docker push "${IMAGE}:${SHORT_SHA}"
+
+      # Cleanup: keep only 2 tags total, then garbage collect unreferenced blobs
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Keep only 2 tags in DOCR (latest + newest sha), delete the rest
+        env:
+          REPO: abgov-ds-react-encore
+          REGISTRY: stagecraft-ing
+        run: |
+          set -euo pipefail
+
+          # List tags (excluding "latest"), newest first by updated_at
+          TAGS=$(doctl registry repository list-tags "${REGISTRY}/${REPO}" --format Tag,UpdatedAt --no-header \
+            | awk '$1 != "latest" {print $1 "\t" $2}' \
+            | sort -rk2 \
+            | awk '{print $1}')
+
+          # Keep only the newest 1 sha tag; delete the rest
+          KEEP=1
+          i=0
+          for t in $TAGS; do
+            i=$((i+1))
+            if [ "$i" -le "$KEEP" ]; then
+              echo "Keeping sha tag: $t"
+            else
+              echo "Deleting old tag: $t"
+              doctl registry repository delete-tag "${REGISTRY}/${REPO}" "$t" --force
+            fi
+          done
+
+      - name: Run DOCR garbage collection (frees storage)
+        env:
+          REGISTRY: stagecraft-ing
+        run: |
+          # Garbage collection is async inside DO; this triggers it
+          doctl registry garbage-collection start --include-untagged-manifests --force
