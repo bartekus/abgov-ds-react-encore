@@ -3,11 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { GoabPageBlock } from "@abgov/react-components";
 
 import { EligibilityStep } from "../components/steps/EligibilityStep";
-import Client, { BaseURL } from "../lib/client";
-
-console.log("import.meta.env", import.meta.env);
-
-const api = new Client(import.meta.env.VITE_API_BASE_URL as string as BaseURL);
+import { api } from "../lib/get-request-client";
 
 console.log("api", api);
 
